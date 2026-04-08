@@ -29,6 +29,9 @@ print("Great! Now let's choose the criteria for your password.")
 include_capital_letters = input("Do you want to include capital letters ? (y/n): ").lower()
 include_numbers = input("Do you want to include numbers ? (y/n): ").lower()
 include_symbols = input("Do you want to include symbols ? (y/n): ").lower()
+print("")
+print("Generating your password...")
+time.sleep(1)
 
 master_list = []
 
