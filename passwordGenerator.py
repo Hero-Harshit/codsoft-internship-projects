@@ -26,6 +26,8 @@ length = int(input("Input the length of the password you want to generate: "))
 print("The length of your password will be: ", length)
 time.sleep(1)
 print("Great! Now let's choose the criteria for your password.")
+time.sleep(1)
+print("Small letters will be included by default.")
 include_capital_letters = input("Do you want to include capital letters ? (y/n): ").lower()
 include_numbers = input("Do you want to include numbers ? (y/n): ").lower()
 include_symbols = input("Do you want to include symbols ? (y/n): ").lower()
@@ -34,6 +36,7 @@ print("Generating your password...")
 time.sleep(1)
 
 master_list = []
+master_list.extend(small_letters)
 
 if include_capital_letters == 'y':
     master_list.extend(capital_letters)
