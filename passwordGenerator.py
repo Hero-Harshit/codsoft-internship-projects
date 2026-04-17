@@ -1,55 +1,67 @@
-# Importing necessary libraries
+Main_Database = []
 
-import random
-import time
+def add_contact(name, surname, phone):
+    contact = {"name": name, "surname": surname, "phone": phone}
+    Main_Database.append(contact)
+    print(f"Contact {name} added successfully!")
 
-# Main Data Sets
+def search_contact(query):
+    found = False
+    for contact in Main_Database:
+        if (contact["name"].lower() == query.lower() or
+            contact["surname"].lower() == query.lower()):
+            print(f"Found: {contact['name']} {contact['surname']} - {contact['phone']}")
+            found = True
+    if not found:
+        print("Contact not found.")
 
-small_letters = [chr(i) for i in range(97, 123)]
-capital_letters = [chr(i) for i in range(65, 91)]
-numbers = [str(i) for i in range(10)]
-symbols = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '+']
+def display_contacts():
+    if not Main_Database:
+        print("No contacts in the database.")
+        return
+    print("\nContact List:")
+    for idx, contact in enumerate(Main_Database, start=1):
+        print(f"{idx}. {contact['name']} {contact['surname']} - {contact['phone']}")
 
-# Beginning of the program
+print("Welcome to the Contact Book!")
 
-print("Hello! Welcome to the password generator.")
-time.sleep(1)
-print("This program will generate a random password for you based on the criteria you choose.")
-time.sleep(1)
-print("You can choose to include small letters, large letters, numbers, and symbols in your password.")
-time.sleep(1)
-print("Let's get started !")
-time.sleep(1)
-print("First, let's choose the length of your password.")
-time.sleep(1)
-length = int(input("Input the length of the password you want to generate: "))
-print("The length of your password will be: ", length)
-time.sleep(1)
-print("Great! Now let's choose the criteria for your password.")
-time.sleep(1)
-print("Small letters will be included by default.")
-include_capital_letters = input("Do you want to include capital letters ? (y/n): ").lower()
-include_numbers = input("Do you want to include numbers ? (y/n): ").lower()
-include_symbols = input("Do you want to include symbols ? (y/n): ").lower()
-print("")
-print("Generating your password...")
-time.sleep(1)
+while True:
+    print("\nOptions:")
+    print("1. Add Contact")
+    print("2. Search Contact")
+    print("3. Display Contacts")
+    print("4. Exit")
 
-master_list = []
-master_list.extend(small_letters)
+    choice = input("Enter your choice: ").strip()
 
-if include_capital_letters == 'y':
-    master_list.extend(capital_letters)
+    if choice == '1':
+        name = input("Enter name: ").strip()
+        surname = input("Enter surname: ").strip()
+        phone = input("Enter phone number: ").strip()
 
-if include_numbers == 'y':
-    master_list.extend(numbers)
+        if not name or not surname or not phone:
+            print("All fields are required!")
+            continue
 
-if include_symbols == 'y':
-    master_list.extend(symbols)
+        if not phone.isdigit():
+            print("Phone number should contain only digits.")
+            continue
 
-generated_password = ""
+        add_contact(name, surname, phone)
 
-for i in range(length):
-    generated_password += random.choice(master_list)
+    elif choice == '2':
+        query = input("Enter name or surname to search: ").strip()
+        if query:
+            search_contact(query)
+        else:
+            print("Please enter something to search.")
 
-print("Your generated password is: ", generated_password)
+    elif choice == '3':
+        display_contacts()
+
+    elif choice == '4':
+        print("Exiting the Contact Book. Goodbye!")
+        break
+
+    else:
+        print("Invalid choice. Please try again.")

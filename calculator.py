@@ -9,7 +9,7 @@ def multiply(a, b):
 
 def divide(a, b):
     if b == 0:
-        return "Cannot divide by zero!"
+        raise ValueError("Cannot divide by zero!")
     return a / b
 
 while True:
@@ -20,7 +20,7 @@ while True:
     print("4. Divide")
     print("5. Exit")
 
-    choice = input("Enter your choice (1-5): ")
+    choice = input("Enter your choice (1-5): ").strip()
 
     if choice == '5':
         print("Goodbye 👋")
