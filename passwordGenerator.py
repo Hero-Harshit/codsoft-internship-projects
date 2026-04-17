@@ -62,3 +62,5 @@ generated_password = ''.join(password_chars)
 
 print("Your automated generated & secured password is:", generated_password)
 print("Don't Share your passwords with anyone.")
+
+# End
