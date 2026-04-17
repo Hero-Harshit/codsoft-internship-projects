@@ -1,67 +1,63 @@
-Main_Database = []
+import secrets
+import time
 
-def add_contact(name, surname, phone):
-    contact = {"name": name, "surname": surname, "phone": phone}
-    Main_Database.append(contact)
-    print(f"Contact {name} added successfully!")
+# Data sets
+small_letters = [chr(i) for i in range(97, 123)]
+capital_letters = [chr(i) for i in range(65, 91)]
+numbers = [str(i) for i in range(10)]
+symbols = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '+']
 
-def search_contact(query):
-    found = False
-    for contact in Main_Database:
-        if (contact["name"].lower() == query.lower() or
-            contact["surname"].lower() == query.lower()):
-            print(f"Found: {contact['name']} {contact['surname']} - {contact['phone']}")
-            found = True
-    if not found:
-        print("Contact not found.")
+print("Hello! Welcome to the password generator.")
+time.sleep(1)
+print("This program will generate a random password based on your choices.")
+time.sleep(1)
 
-def display_contacts():
-    if not Main_Database:
-        print("No contacts in the database.")
-        return
-    print("\nContact List:")
-    for idx, contact in enumerate(Main_Database, start=1):
-        print(f"{idx}. {contact['name']} {contact['surname']} - {contact['phone']}")
+# Validate length input
+try:
+    length = int(input("Enter password length: ").strip())
+    if length <= 0:
+        print("Length must be greater than 0.")
+        exit()
+except ValueError:
+    print("Please enter a valid number.")
+    exit()
 
-print("Welcome to the Contact Book!")
+# User choices
+include_capital = input("Include capital letters? (y/n): ").strip().lower().startswith('y')
+include_numbers = input("Include numbers? (y/n): ").strip().lower().startswith('y')
+include_symbols = input("Include symbols? (y/n): ").strip().lower().startswith('y')
 
-while True:
-    print("\nOptions:")
-    print("1. Add Contact")
-    print("2. Search Contact")
-    print("3. Display Contacts")
-    print("4. Exit")
+print("\nGenerating your password...")
+time.sleep(1)
 
-    choice = input("Enter your choice: ").strip()
+# Build character pool
+master_list = []
+master_list.extend(small_letters)
 
-    if choice == '1':
-        name = input("Enter name: ").strip()
-        surname = input("Enter surname: ").strip()
-        phone = input("Enter phone number: ").strip()
+selected_groups = [small_letters]
 
-        if not name or not surname or not phone:
-            print("All fields are required!")
-            continue
+if include_capital:
+    master_list.extend(capital_letters)
+    selected_groups.append(capital_letters)
 
-        if not phone.isdigit():
-            print("Phone number should contain only digits.")
-            continue
+if include_numbers:
+    master_list.extend(numbers)
+    selected_groups.append(numbers)
 
-        add_contact(name, surname, phone)
+if include_symbols:
+    master_list.extend(symbols)
+    selected_groups.append(symbols)
 
-    elif choice == '2':
-        query = input("Enter name or surname to search: ").strip()
-        if query:
-            search_contact(query)
-        else:
-            print("Please enter something to search.")
+# Ensure at least one character from each selected group
+password_chars = [secrets.choice(group) for group in selected_groups]
 
-    elif choice == '3':
-        display_contacts()
+# Fill remaining length
+while len(password_chars) < length:
+    password_chars.append(secrets.choice(master_list))
 
-    elif choice == '4':
-        print("Exiting the Contact Book. Goodbye!")
-        break
+# Shuffle for randomness
+secrets.SystemRandom().shuffle(password_chars)
 
-    else:
-        print("Invalid choice. Please try again.")
+generated_password = ''.join(password_chars)
+
+print("Your generated password is:", generated_password)
